@@ -192,8 +192,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
             }
             if(placemarks && placemarks.count > 0) {
                 CLPlacemark *topResult = [placemarks objectAtIndex:0];
-                NSString *addressTxt = [NSString stringWithFormat:@"%@ %@,%@ %@",
-                                        [topResult subThoroughfare],[topResult thoroughfare],
+                NSString *addressTxt = [NSString stringWithFormat:@"%@,%@ %@",
+                                        [topResult thoroughfare],
                                         [topResult locality], [topResult administrativeArea]];
                 NSLog(@"%@",addressTxt);
                 self.lostItemLocation.text = [NSString stringWithFormat:@"%@", addressTxt];
@@ -232,13 +232,13 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
         lostItem[@"helpers"] = array;
         [lostItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if(succeeded) {
-                [self.tabBarController setSelectedIndex:0];
                 self.locationDetail.text = @"";
                 self.itemTextField.text = @"";
                 //        self.locationDetail.text = @"";
                 self.lostItemLocation.text = @"";
                 self.descItemTextField.text = @"";
                 self.imageView.image = nil;
+                [self.tabBarController setSelectedIndex:0];
             }
         }];
     }

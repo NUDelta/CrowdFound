@@ -26,6 +26,8 @@
 @property BOOL hasPin;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+#define degreesToRadians(x) (M_PI * x / 180.0)
+#define radiandsToDegrees(x) (x * 180.0 / M_PI)
 @end
 
 @implementation HelperMapViewController
@@ -73,6 +75,7 @@
 //    HelperAnnotation *helper = [[HelperAnnotation alloc]initWithTitle:@"helper" Location:center];
 //    [self.mapView addAnnotation:helper];
     // Do any additional setup after loading the view.
+    self.localNotif  = [[UILocalNotification alloc] init];
 }
 
 //- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
@@ -155,20 +158,41 @@
                 if([[self.locationManager monitoredRegions] count]>0){
                     for(CLRegion *i in [self.locationManager monitoredRegions]){
                         if(center.latitude!=i.center.latitude && center.longitude != i.center.longitude) {
-                            CLCircularRegion *region = [[CLCircularRegion alloc]initWithCenter:center radius:50 identifier:[obj valueForKeyPath:@"objectId"]];
-                            [self.locationManager startMonitoringForRegion: region];
-                            //                    NSLog(@"finished monitoring %f, %f",i.center.latitude, i.center.longitude);
+                            // this is for CrowdFound v1
+//                            CLCircularRegion *region = [[CLCircularRegion alloc]initWithCenter:center radius:50 identifier:[obj valueForKeyPath:@"objectId"]];
+//                            [self.locationManager startMonitoringForRegion: region];
+                            
+                            // this is for CrowdFound v2
+                            NSString *str_NW = [NSString stringWithFormat:@"%@_NorthWest",[obj valueForKeyPath:@"objectId"]];
+                            NSString *str_NE = [NSString stringWithFormat:@"%@_NorthEast",[obj valueForKeyPath:@"objectId"]];
+                            NSString *str_SE = [NSString stringWithFormat:@"%@_SouthEast",[obj valueForKeyPath:@"objectId"]];
+                            NSString *str_SW = [NSString stringWithFormat:@"%@_SouthWest",[obj valueForKeyPath:@"objectId"]];
+
+                            [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:-45 name: str_NW]; //top left NW
+                            [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:45 name: str_NE]; //top right NE
+                            [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:145 name: str_SE]; //bottom right SE
+                            [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:-145 name: str_SW]; //botton left SW
                         }
                     }
                 } else {
-                    CLCircularRegion *region = [[CLCircularRegion alloc]initWithCenter:center radius:50 identifier:[obj valueForKeyPath:@"objectId"]];
-                    [self.locationManager startMonitoringForRegion: region];
-                    //            NSLog(@"finished monitoring %f, %f",center.latitude, center.longitude);
+                    // this is for CrowdFound v1
+//                    CLCircularRegion *region = [[CLCircularRegion alloc]initWithCenter:center radius:50 identifier:[obj valueForKeyPath:@"objectId"]];
+//                    [self.locationManager startMonitoringForRegion: region];
+                    //NSLog(@"finished monitoring %f, %f",center.latitude, center.longitude);
+                    
+                    //this is for CrowdFound v2
+                    NSString *str_NW = [NSString stringWithFormat:@"%@_NorthWest",[obj valueForKeyPath:@"objectId"]];
+                    NSString *str_NE = [NSString stringWithFormat:@"%@_NorthEast",[obj valueForKeyPath:@"objectId"]];
+                    NSString *str_SE = [NSString stringWithFormat:@"%@_SouthEast",[obj valueForKeyPath:@"objectId"]];
+                    NSString *str_SW = [NSString stringWithFormat:@"%@_SouthWest",[obj valueForKeyPath:@"objectId"]];
+                    
+                    [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:-45 name: str_NW]; //top left NW
+                    [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:45 name: str_NE]; //top right NE
+                    [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:145 name: str_SE]; //bottom right SE
+                    [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:-145 name: str_SW]; //botton left SW
                 }
-
-//                [self.spinner stopAnimating];
-
             }
+
 //            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(drawAnnotations) userInfo:nil repeats:YES];
 //            [timer fire];
         }
@@ -176,13 +200,62 @@
 //    [self drawAnnotations];
 }
 
+- (void)coordinateFromCoord:
+(CLLocationCoordinate2D)fromCoord
+               atDistanceKm:(double)distanceKm
+           atBearingDegrees:(double)bearingDegrees
+                       name: (NSString *)name
+{
+    double distanceRadians = distanceKm / 6371.0;
+    //6,371 = Earth's radius in km
+    double bearingRadians = degreesToRadians(bearingDegrees);
+    double fromLatRadians = degreesToRadians(fromCoord.latitude);
+    double fromLonRadians = degreesToRadians(fromCoord.longitude);
+    
+    double toLatRadians = asin( sin(fromLatRadians) * cos(distanceRadians)
+                               + cos(fromLatRadians) * sin(distanceRadians) * cos(bearingRadians) );
+    
+    double toLonRadians = fromLonRadians + atan2(sin(bearingRadians)
+                                                 * sin(distanceRadians) * cos(fromLatRadians), cos(distanceRadians)
+                                                 - sin(fromLatRadians) * sin(toLatRadians));
+    
+    // adjust toLonRadians to be in the range -180 to +180...
+    toLonRadians = fmod((toLonRadians + 3*M_PI), (2*M_PI)) - M_PI;
+    
+    CLLocationCoordinate2D result;
+    result.latitude = radiandsToDegrees(toLatRadians);
+    result.longitude = radiandsToDegrees(toLonRadians);
+    NSLog(@"new coordinate is %f, %f", result.latitude, result.longitude);
+    [self monitorSubRegions:result radius:20 name:name];
+//    [self addPinWithCenter:result Title:name];
+    //    return result;
+}
+
+- (void)addPinWithCenter: (CLLocationCoordinate2D)center
+                   Title: (NSString *)title
+{
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    annotation.coordinate = center;
+    annotation.title = title;
+    [self.mapView addAnnotation:annotation];
+    [self.mapView addAnnotation:annotation];
+}
+
+- (void)monitorSubRegions: (CLLocationCoordinate2D)center
+                   radius: (float) radius
+                     name: (NSString *)name{
+    CLCircularRegion *region = [[CLCircularRegion alloc]initWithCenter:center radius:radius identifier: name];
+    [self.locationManager startMonitoringForRegion:region];
+    NSLog(@"start monitoring %@", name);
+}
+
 - (void)drawAnnotations
 {
-//    for(id annotation in self.mapView.annotations) {
-//        if ([annotation isKindOfClass:[HelperAnnotation class]]) {
-//            [self.mapView removeAnnotation:annotation];
-//        }
-//    }
+    for(id annotation in self.mapView.annotations) {
+        if ([annotation isKindOfClass:[HelperAnnotation class]]) {
+            [self.mapView removeAnnotation:annotation];
+        }
+    }
 
     CLLocationCoordinate2D center;
     for (NSArray *obj in self.annotations) {
@@ -292,19 +365,38 @@
 
 - (void)testNotif: (NSString *)objId
 {
-    for (NSArray *place in self.annotations){
-        if ([(NSString *)[place valueForKeyPath:@"objectId"] isEqualToString:objId]){
-            self.localNotif = [[UILocalNotification alloc] init];
-            NSDictionary *dictionary = [NSDictionary dictionaryWithObject:objId forKey:objId];
+    //this is for CrowdFound v1
+//    for (NSArray *place in self.annotations){
+//        NSArray *objIdParsed = [objId componentsSeparatedByString:@"_"];
+//        NSLog(@"%@ and %@", objId, objIdParsed[0]);
+////        if ([(NSString *)[place valueForKeyPath:@"objectId"] isEqualToString:objId]){
+//        if ([(NSString *)[place valueForKeyPath:@"objectId"] isEqualToString:objIdParsed[0]]){
+//            self.localNotif = [[UILocalNotification alloc] init];
+//            NSDictionary *dictionary = [NSDictionary dictionaryWithObject:objId forKey:objId];
+//            self.localNotif.userInfo = dictionary;
+//            self.localNotif.alertBody = [NSString stringWithFormat:@"%@ lost %@, would you like to help?", [place valueForKeyPath:@"username"], [place valueForKeyPath:@"item"]];
+//            self.localNotif.alertAction = @"Testing notification based on regions";
+//            self.localNotif.soundName = UILocalNotificationDefaultSoundName;
+//            if (self.localNotif) {
+//                self.localNotif.applicationIconBadgeNumber = 1;
+//                [self appUsageLogging:@"notification"];
+//                [[UIApplication sharedApplication] presentLocalNotificationNow:self.localNotif];
+//            }
+//        }
+//    }
+    for (NSArray *a in self.annotations) {
+        NSLog(@"===============testing %@ and %@ and %@===============", [a valueForKeyPath:@"username"], [a valueForKeyPath:@"item"], [a valueForKeyPath:@"objectId"]);
+        NSString *tmp = [a valueForKeyPath:@"objectId"];
+        NSArray *objIdParsed = [objId componentsSeparatedByString:@"_"];
+        if ([tmp isEqualToString:objIdParsed[0]]) {
+            NSDictionary *dictionary = [NSDictionary dictionaryWithObject:objIdParsed[0] forKey:objId];
             self.localNotif.userInfo = dictionary;
-            self.localNotif.alertBody = [NSString stringWithFormat:@"%@ lost %@, would you like to help?", [place valueForKeyPath:@"username"], [place valueForKeyPath:@"item"]];
-            self.localNotif.alertAction = @"Testing notification based on regions";
-            self.localNotif.soundName = UILocalNotificationDefaultSoundName;
-            if (self.localNotif) {
-                self.localNotif.applicationIconBadgeNumber = 1;
-                [self appUsageLogging:@"notification"];
-                [[UIApplication sharedApplication] presentLocalNotificationNow:self.localNotif];
-            }
+            self.localNotif.alertBody = [NSString stringWithFormat:@"%@ lost %@ near %@, would you like to help?", [a valueForKeyPath:@"username"], [a valueForKeyPath:@"item"], [a valueForKeyPath:@"locDetail"]];
+//            self.localNotif.alertBody = [NSString stringWithFormat:@"%@ lost %@ near %@, would you like to help?", [a valueForKeyPath:@"username"], [a valueForKeyPath:@"item"], objId];
+            self.localNotif.applicationIconBadgeNumber = 1;
+            NSString *noti_str = [NSString stringWithFormat:@"notificatino for %@", [a valueForKeyPath:@"locDetail"]];
+            [self appUsageLogging:noti_str];
+            [[UIApplication sharedApplication] presentLocalNotificationNow:self.localNotif];
         }
     }
 }

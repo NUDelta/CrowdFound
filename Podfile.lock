@@ -4,6 +4,7 @@ PODS:
     - Bolts (~> 1.1)
 
 DEPENDENCIES:
+  - Bolts
   - Parse
 
 SPEC CHECKSUMS:
