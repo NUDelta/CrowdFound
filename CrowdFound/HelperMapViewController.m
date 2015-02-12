@@ -138,36 +138,33 @@
 
 - (void)getAnnotations
 {
-    PFQuery *query = [PFQuery queryWithClassName: @"Request"];
-//    [self.spinner startAnimating];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if(!error) {
-            self.annotations = objects;
+
+
+    dispatch_queue_t myQueue = dispatch_queue_create("My Queue",NULL);
+    dispatch_async(myQueue, ^{
+        PFQuery *query = [PFQuery queryWithClassName: @"Request"];
+        self.annotations = [query findObjects];
+        if ([self.annotations count]>0) {
             CLLocationCoordinate2D center;
             for (NSArray *obj in self.annotations) {
                 //        NSLog(@"%@, %@",[obj valueForKeyPath:@"lat"], [obj valueForKeyPath:@"lng"]);
-                MKPointAnnotation *pin = [[MKPointAnnotation alloc] init];
                 CLLocationCoordinate2D center;
                 center.latitude = [[obj valueForKeyPath:@"lat"] floatValue];
                 center.longitude = [[obj valueForKeyPath:@"lng"] floatValue];
-    
-                pin.coordinate = center;
-                pin.title = [obj valueForKeyPath:@"item"];
-                [self.mapView addAnnotation:pin];
-
+                
                 if([[self.locationManager monitoredRegions] count]>0){
                     for(CLRegion *i in [self.locationManager monitoredRegions]){
                         if(center.latitude!=i.center.latitude && center.longitude != i.center.longitude) {
                             // this is for CrowdFound v1
-//                            CLCircularRegion *region = [[CLCircularRegion alloc]initWithCenter:center radius:50 identifier:[obj valueForKeyPath:@"objectId"]];
-//                            [self.locationManager startMonitoringForRegion: region];
+                            //                            CLCircularRegion *region = [[CLCircularRegion alloc]initWithCenter:center radius:50 identifier:[obj valueForKeyPath:@"objectId"]];
+                            //                            [self.locationManager startMonitoringForRegion: region];
                             
                             // this is for CrowdFound v2
                             NSString *str_NW = [NSString stringWithFormat:@"%@_NorthWest",[obj valueForKeyPath:@"objectId"]];
                             NSString *str_NE = [NSString stringWithFormat:@"%@_NorthEast",[obj valueForKeyPath:@"objectId"]];
                             NSString *str_SE = [NSString stringWithFormat:@"%@_SouthEast",[obj valueForKeyPath:@"objectId"]];
                             NSString *str_SW = [NSString stringWithFormat:@"%@_SouthWest",[obj valueForKeyPath:@"objectId"]];
-
+                            
                             [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:-45 name: str_NW]; //top left NW
                             [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:45 name: str_NE]; //top right NE
                             [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:145 name: str_SE]; //bottom right SE
@@ -176,8 +173,8 @@
                     }
                 } else {
                     // this is for CrowdFound v1
-//                    CLCircularRegion *region = [[CLCircularRegion alloc]initWithCenter:center radius:50 identifier:[obj valueForKeyPath:@"objectId"]];
-//                    [self.locationManager startMonitoringForRegion: region];
+                    //                    CLCircularRegion *region = [[CLCircularRegion alloc]initWithCenter:center radius:50 identifier:[obj valueForKeyPath:@"objectId"]];
+                    //                    [self.locationManager startMonitoringForRegion: region];
                     //NSLog(@"finished monitoring %f, %f",center.latitude, center.longitude);
                     
                     //this is for CrowdFound v2
@@ -186,18 +183,25 @@
                     NSString *str_SE = [NSString stringWithFormat:@"%@_SouthEast",[obj valueForKeyPath:@"objectId"]];
                     NSString *str_SW = [NSString stringWithFormat:@"%@_SouthWest",[obj valueForKeyPath:@"objectId"]];
                     
-                    [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:-45 name: str_NW]; //top left NW
-                    [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:45 name: str_NE]; //top right NE
-                    [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:145 name: str_SE]; //bottom right SE
-                    [self coordinateFromCoord:center atDistanceKm:0.035 atBearingDegrees:-145 name: str_SW]; //botton left SW
+                    [self coordinateFromCoord:center atDistanceKm:0.04 atBearingDegrees:-45 name: str_NW]; //top left NW
+                    [self coordinateFromCoord:center atDistanceKm:0.04 atBearingDegrees:45 name: str_NE]; //top right NE
+                    [self coordinateFromCoord:center atDistanceKm:0.04 atBearingDegrees:145 name: str_SE]; //bottom right SE
+                    [self coordinateFromCoord:center atDistanceKm:0.04 atBearingDegrees:-145 name: str_SW]; //botton left SW
                 }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // Update the UI
+                    [self.spinner startAnimating];
+                    MKPointAnnotation *pin = [[MKPointAnnotation alloc] init];
+                    pin.coordinate = center;
+                    pin.title = [obj valueForKeyPath:@"item"];
+                    [self.mapView addAnnotation:pin];
+                    [self.spinner stopAnimating];
+                });
             }
-
+        }
+    });
 //            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(drawAnnotations) userInfo:nil repeats:YES];
 //            [timer fire];
-        }
-    }];
-//    [self drawAnnotations];
 }
 
 - (void)coordinateFromCoord:
@@ -396,9 +400,17 @@
             self.localNotif.applicationIconBadgeNumber = 1;
             NSString *noti_str = [NSString stringWithFormat:@"notificatino for %@", [a valueForKeyPath:@"locDetail"]];
             [self appUsageLogging:noti_str];
+            self.localNotif.soundName = UILocalNotificationDefaultSoundName;
             [[UIApplication sharedApplication] presentLocalNotificationNow:self.localNotif];
         }
     }
+}
+
+- (void)logCurrentLocation {
+    [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
+        NSString *geoCoordinate = [NSString stringWithFormat:@"%f, %f", geoPoint.latitude, geoPoint.longitude];
+        [self appUsageLogging:geoCoordinate];
+    }];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
@@ -408,6 +420,7 @@
         NSLog(@"entered region: %@", region.identifier);
         [self.locationManager stopMonitoringForRegion:region];
         [self appUsageLogging: region.identifier];
+        [self logCurrentLocation];
 //        self.hasNotified = YES;
     }
 }

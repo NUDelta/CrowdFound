@@ -57,7 +57,6 @@
 		598D44651A10B1130016484E /* CrowdFoundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CrowdFoundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		598D446A1A10B1130016484E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		598D446B1A10B1130016484E /* CrowdFoundTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CrowdFoundTests.m; sourceTree = "<group>"; };
-		598D44761A10B1660016484E /* Delta.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; name = Delta.mobileprovision; path = ../Delta.mobileprovision; sourceTree = "<group>"; };
 		598D44941A11095C0016484E /* RequestDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestDetailViewController.h; sourceTree = "<group>"; };
 		598D44951A11095C0016484E /* RequestDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestDetailViewController.m; sourceTree = "<group>"; };
 		598D44971A1114390016484E /* HelperMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperMapViewController.h; sourceTree = "<group>"; };
@@ -146,7 +145,6 @@
 			isa = PBXGroup;
 			children = (
 				59ACE7D01A89130100CB5A85 /* delta.gpx */,
-				598D44761A10B1660016484E /* Delta.mobileprovision */,
 				59C92C931A226F0800B60983 /* TabBarViewController.h */,
 				59C92C941A226F0800B60983 /* TabBarViewController.m */,
 				59DFACDF1A840F16003F9D49 /* Images */,
