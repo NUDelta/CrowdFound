@@ -36,15 +36,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="SZr-TF-kYK">
-                                <rect key="frame" x="150" y="250" width="20" height="20"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="190" y="274" width="20" height="20"/>
-                                </variation>
-                            </activityIndicatorView>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="J90-Pz-GuB">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                             </mapView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1MP-oO-kLK">
+                                <rect key="frame" x="-10" y="-10" width="20" height="20"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="190" y="298" width="20" height="20"/>
+                                </variation>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -53,6 +53,16 @@
                             <constraint firstItem="J90-Pz-GuB" firstAttribute="top" secondItem="5eR-IO-W1z" secondAttribute="bottom" id="jC3-29-3Ab"/>
                             <constraint firstItem="QMz-78-UWg" firstAttribute="top" secondItem="J90-Pz-GuB" secondAttribute="bottom" id="pE6-Et-7EH"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="1MP-oO-kLK"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="1MP-oO-kLK"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="clj-x7-Bcp">
                         <nil key="title"/>
@@ -72,7 +82,7 @@
                     <connections>
                         <outlet property="mapView" destination="J90-Pz-GuB" id="vfP-vA-xHD"/>
                         <outlet property="segmentedControl" destination="oQt-74-i8T" id="cHV-7b-DnL"/>
-                        <outlet property="spinner" destination="SZr-TF-kYK" id="o3W-f2-QDT"/>
+                        <outlet property="spinner" destination="1MP-oO-kLK" id="7QC-gS-Fij"/>
                         <segue destination="wu9-Dl-ZdV" kind="show" identifier="HelperDetailSegue" id="4hI-zP-oZU"/>
                     </connections>
                 </viewController>
@@ -266,30 +276,82 @@
                         <viewControllerLayoutGuide type="bottom" id="My8-Qq-ohj"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="yqH-4s-O8V">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Press on map to pin the location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZ0-ca-mJ3">
+                                <rect key="frame" x="31" y="72" width="259" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="fZ0-ca-mJ3" secondAttribute="height" multiplier="37:3" id="HkO-l3-LXj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="HkO-l3-LXj"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="61" y="79" width="259" height="21"/>
+                                    <mask key="constraints">
+                                        <include reference="HkO-l3-LXj"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="28" y="79" width="331" height="21"/>
+                                </variation>
+                            </label>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UT3-ae-ALF">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <items>
                                     <navigationItem title="Add location" id="rfN-fW-cwy"/>
                                 </items>
                             </navigationBar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Press on map to pin the location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZ0-ca-mJ3">
-                                <rect key="frame" x="31" y="72" width="259" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Vvs-7z-M9P">
-                                <rect key="frame" x="0.0" y="101" width="320" height="418"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Vvs-7z-M9P">
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="1" y="122" width="383" height="419"/>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="124" width="383" height="419"/>
+                                </variation>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="My8-Qq-ohj" firstAttribute="top" secondItem="Vvs-7z-M9P" secondAttribute="bottom" id="Igz-2E-UXk"/>
-                            <constraint firstItem="Vvs-7z-M9P" firstAttribute="top" secondItem="fZ0-ca-mJ3" secondAttribute="bottom" constant="8" id="ZIu-nx-D9P"/>
+                            <constraint firstItem="fZ0-ca-mJ3" firstAttribute="trailing" secondItem="yqH-4s-O8V" secondAttribute="trailingMargin" id="58C-EH-3fl"/>
+                            <constraint firstAttribute="centerY" secondItem="Vvs-7z-M9P" secondAttribute="centerY" id="JGG-fn-Hog"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Vvs-7z-M9P" secondAttribute="trailing" constant="-24" id="Mhb-wF-X5S"/>
+                            <constraint firstItem="Vvs-7z-M9P" firstAttribute="top" secondItem="fZ0-ca-mJ3" secondAttribute="bottom" constant="22" id="Rzf-3e-dm4"/>
+                            <constraint firstAttribute="centerX" secondItem="Vvs-7z-M9P" secondAttribute="centerX" constant="-5" id="VXg-7k-GMB"/>
+                            <constraint firstItem="fZ0-ca-mJ3" firstAttribute="leading" secondItem="yqH-4s-O8V" secondAttribute="leadingMargin" constant="12" id="WX7-cZ-eYu"/>
+                            <constraint firstItem="Vvs-7z-M9P" firstAttribute="leading" secondItem="yqH-4s-O8V" secondAttribute="leadingMargin" constant="-16" id="eUL-DC-qoN"/>
+                            <constraint firstItem="fZ0-ca-mJ3" firstAttribute="top" secondItem="L4f-K1-Qif" secondAttribute="bottom" constant="15" id="wLX-E7-qca"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="JGG-fn-Hog"/>
+                                <exclude reference="Mhb-wF-X5S"/>
+                                <exclude reference="Rzf-3e-dm4"/>
+                                <exclude reference="VXg-7k-GMB"/>
+                                <exclude reference="eUL-DC-qoN"/>
+                                <exclude reference="58C-EH-3fl"/>
+                                <exclude reference="WX7-cZ-eYu"/>
+                                <exclude reference="wLX-E7-qca"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="JGG-fn-Hog"/>
+                                <include reference="Mhb-wF-X5S"/>
+                                <include reference="Rzf-3e-dm4"/>
+                                <include reference="VXg-7k-GMB"/>
+                                <include reference="eUL-DC-qoN"/>
+                                <include reference="58C-EH-3fl"/>
+                                <include reference="WX7-cZ-eYu"/>
+                                <include reference="wLX-E7-qca"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Pin Lost Item Location" id="HU6-Oi-Mz5">
                         <barButtonItem key="rightBarButtonItem" title="done" id="lPd-Us-IY4">
@@ -298,6 +360,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="mapView" destination="Vvs-7z-M9P" id="5qD-c3-LgF"/>
                     </connections>
@@ -305,7 +368,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xUG-WY-34y" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="lGa-s3-Is8" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2587.5" y="-39.08450704225352"/>
+            <point key="canvasLocation" x="2586.75" y="-40.875"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="7Lu-gu-RMq">
@@ -487,12 +550,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="phn-At-d2O">
-                                <rect key="frame" x="0.0" y="64" width="320" height="369"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="phn-At-d2O" secondAttribute="height" multiplier="320:369" id="ON8-vR-jIV"/>
-                                </constraints>
-                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="phn-At-d2O">
+                                <rect key="frame" x="0.0" y="64" width="375" height="369"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="0.0" y="64" width="375" height="369"/>
                                 </variation>
                             </mapView>
@@ -501,8 +561,8 @@
                                 <state key="normal" title="I couldn't find it">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="228" y="457" width="118" height="51"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="229" y="445" width="118" height="51"/>
                                 </variation>
                                 <connections>
                                     <action selector="notFoundButton:" destination="BzO-PV-j7h" eventType="touchUpInside" id="xNT-YI-uPP"/>
@@ -513,8 +573,8 @@
                                 <state key="normal" title="I found the item">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="35" y="455" width="114" height="55"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="42" y="443" width="114" height="55"/>
                                 </variation>
                                 <connections>
                                     <action selector="foundButton:" destination="BzO-PV-j7h" eventType="touchUpInside" id="7bF-zr-4vT"/>
@@ -523,31 +583,25 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="l2c-DZ-ghS" firstAttribute="leading" secondItem="AIM-jD-4RV" secondAttribute="leadingMargin" constant="20" id="F8X-Vu-WeI"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="phn-At-d2O" secondAttribute="trailing" constant="-16" id="eQh-J5-XFx"/>
-                            <constraint firstItem="l2c-DZ-ghS" firstAttribute="top" secondItem="phn-At-d2O" secondAttribute="bottom" constant="35" id="exh-pf-TSN"/>
-                            <constraint firstItem="aKa-qc-pAp" firstAttribute="top" secondItem="phn-At-d2O" secondAttribute="bottom" constant="35" id="iYA-tO-AlA"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="aKa-qc-pAp" secondAttribute="trailing" constant="20" id="lHq-Xe-i11"/>
-                            <constraint firstItem="phn-At-d2O" firstAttribute="leading" secondItem="AIM-jD-4RV" secondAttribute="leadingMargin" constant="-16" id="y8d-PI-Cgb"/>
+                            <constraint firstItem="aKa-qc-pAp" firstAttribute="leading" secondItem="l2c-DZ-ghS" secondAttribute="trailing" constant="73" id="LoC-hb-dqf"/>
+                            <constraint firstItem="m9r-3z-DDN" firstAttribute="top" secondItem="l2c-DZ-ghS" secondAttribute="bottom" constant="120" id="VV6-gJ-EfJ"/>
+                            <constraint firstItem="l2c-DZ-ghS" firstAttribute="leading" secondItem="AIM-jD-4RV" secondAttribute="leadingMargin" constant="26" id="hSj-Dq-Z4c"/>
+                            <constraint firstItem="m9r-3z-DDN" firstAttribute="top" secondItem="aKa-qc-pAp" secondAttribute="bottom" constant="122" id="y6C-gd-YvK"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="eQh-J5-XFx"/>
-                                <exclude reference="y8d-PI-Cgb"/>
-                                <exclude reference="F8X-Vu-WeI"/>
-                                <exclude reference="exh-pf-TSN"/>
-                                <exclude reference="iYA-tO-AlA"/>
-                                <exclude reference="lHq-Xe-i11"/>
+                                <exclude reference="hSj-Dq-Z4c"/>
+                                <exclude reference="LoC-hb-dqf"/>
+                                <exclude reference="VV6-gJ-EfJ"/>
+                                <exclude reference="y6C-gd-YvK"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="constraints">
-                                <include reference="eQh-J5-XFx"/>
-                                <include reference="y8d-PI-Cgb"/>
-                                <include reference="F8X-Vu-WeI"/>
-                                <include reference="exh-pf-TSN"/>
-                                <include reference="iYA-tO-AlA"/>
-                                <include reference="lHq-Xe-i11"/>
+                                <include reference="hSj-Dq-Z4c"/>
+                                <include reference="LoC-hb-dqf"/>
+                                <include reference="VV6-gJ-EfJ"/>
+                                <include reference="y6C-gd-YvK"/>
                             </mask>
                         </variation>
                     </view>
@@ -559,7 +613,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="azK-Q9-3dK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3386.25" y="665.5"/>
+            <point key="canvasLocation" x="3385.5" y="665.5"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="Ncr-8p-4KA">
