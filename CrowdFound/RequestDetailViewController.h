@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 @interface RequestDetailViewController : UIViewController
 @property (strong, nonatomic) NSArray *annotations;
+@property (strong, nonatomic) GMSMarker *marker;
+
 @end

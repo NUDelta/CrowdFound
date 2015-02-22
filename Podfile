@@ -4,3 +4,5 @@ workspace 'CrowdFound'
 
 pod 'Parse'
 pod 'Bolts'
+pod 'Google-Maps-iOS-SDK'
+

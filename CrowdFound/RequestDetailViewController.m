@@ -11,7 +11,7 @@
 #import <Parse/Parse.h>
 #import "AddLocationViewController.h"
 #import "MyUser.h"
-
+#import "AddLocationGMapViewController.h"
 @interface RequestDetailViewController () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UIScrollViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *descItemTextField;
 @property (weak, nonatomic) IBOutlet UITextField *itemTextField;
@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lostItemLocation;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+//@property (strong, nonatomic) GMSGeocoder *geocoder;
 
 @end
 
@@ -173,38 +174,62 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 - (IBAction)completeAddLocation: (UIStoryboardSegue *)segue
 {
     NSLog(@"completeAddLocation");
-    AddLocationViewController *alvc = segue.sourceViewController;
-    self.annotations = alvc.annotations;
-    for (id <MKAnnotation> annotation in self.annotations) {
-//        self.locationDetail.text = [[NSString alloc] initWithFormat:@"%f, %f", annotation.coordinate.latitude, annotation.coordinate.longitude];
-        CLGeocoder *geocoder = [[CLGeocoder alloc]init];
-        CLLocation *loc = [[CLLocation alloc]initWithLatitude: annotation.coordinate.latitude
-                                                    longitude: annotation.coordinate.longitude];
-        
-        [geocoder reverseGeocodeLocation:loc completionHandler:^(NSArray *placemarks, NSError *error) {
-            NSLog(@"reverseGeocodeLocation:completionHandler: Completion Handler called!");
-            
-            if (error){
-                NSLog(@"Geocode failed with error: %@", error);
-                self.lostItemLocation.text = [NSString stringWithFormat:@"%f, %f", annotation.coordinate.latitude, annotation.coordinate.longitude];
-                return;
-                
-            }
-            if(placemarks && placemarks.count > 0) {
-                CLPlacemark *topResult = [placemarks objectAtIndex:0];
-                NSString *addressTxt = [NSString stringWithFormat:@"%@,%@ %@",
-                                        [topResult thoroughfare],
-                                        [topResult locality], [topResult administrativeArea]];
-                NSLog(@"%@",addressTxt);
-                self.lostItemLocation.text = [NSString stringWithFormat:@"%@", addressTxt];
-                [self.lostItemLocation sizeToFit];
-            }
-        }];
-//        self.lostItemLocation.text = [[NSString alloc] initWithFormat:@"%f, %f", annotation.coordinate.latitude, annotation.coordinate.longitude];
-    }
+    AddLocationGMapViewController *algvc = segue.sourceViewController;
+    self.marker = algvc.marker;
+    
+    CLLocation *loc = [[CLLocation alloc]initWithLatitude: self.marker.position.latitude
+                                                longitude: self.marker.position.longitude];
+    
+    GMSGeocoder *geocoder = [[GMSGeocoder alloc]init];
+    [geocoder reverseGeocodeCoordinate:self.marker.position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+         if (error){
+             NSLog(@"Geocode failed with error: %@", error);
+             self.lostItemLocation.text = [NSString stringWithFormat:@"%f, %f", self.marker.position
+                                           .latitude, self.marker.position.longitude];
+             return;
+         }
 
+         if(response.results > 0) {
+             GMSAddress *topResult = [response.results objectAtIndex:0];
+             NSString *addressTxt = [NSString stringWithFormat:@"%@,%@ %@",
+                                     [topResult thoroughfare],
+                                     [topResult locality], [topResult administrativeArea]];
+             NSLog(@"%@",addressTxt);
+             self.lostItemLocation.text = [NSString stringWithFormat:@"%@", addressTxt];
+             [self.lostItemLocation sizeToFit];
+         }
+    }];
+
+//    AddLocationViewController *alvc = segue.sourceViewController;
+//    self.annotations = alvc.annotations;
+//    for (id <MKAnnotation> annotation in self.annotations) {
+////        self.locationDetail.text = [[NSString alloc] initWithFormat:@"%f, %f", annotation.coordinate.latitude, annotation.coordinate.longitude];
+//        CLGeocoder *geocoder = [[CLGeocoder alloc]init];
+//        CLLocation *loc = [[CLLocation alloc]initWithLatitude: annotation.coordinate.latitude
+//                                                    longitude: annotation.coordinate.longitude];
+//        
+//        [geocoder reverseGeocodeLocation:loc completionHandler:^(NSArray *placemarks, NSError *error) {
+//            NSLog(@"reverseGeocodeLocation:completionHandler: Completion Handler called!");
+//            
+//            if (error){
+//                NSLog(@"Geocode failed with error: %@", error);
+//                self.lostItemLocation.text = [NSString stringWithFormat:@"%f, %f", annotation.coordinate.latitude, annotation.coordinate.longitude];
+//                return;
+//                
+//            }
+//            if(placemarks && placemarks.count > 0) {
+//                CLPlacemark *topResult = [placemarks objectAtIndex:0];
+//                NSString *addressTxt = [NSString stringWithFormat:@"%@,%@ %@",
+//                                        [topResult thoroughfare],
+//                                        [topResult locality], [topResult administrativeArea]];
+//                NSLog(@"%@",addressTxt);
+//                self.lostItemLocation.text = [NSString stringWithFormat:@"%@", addressTxt];
+//                [self.lostItemLocation sizeToFit];
+//            }
+//        }];
+////        self.lostItemLocation.text = [[NSString alloc] initWithFormat:@"%f, %f", annotation.coordinate.latitude, annotation.coordinate.longitude];
+//    }
 }
-
 
 - (void)saveRequest
 {
@@ -222,8 +247,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
         lostItem[@"detail"] = self.descItemTextField.text;
         lostItem[@"locationDetail"] = self.locationDetail.text;
         lostItem[@"locDetail"] = self.lostItemLocation.text;
-        lostItem[@"lat"] =  [[NSString alloc] initWithFormat:@"%f", annotation.coordinate.latitude];
-        lostItem[@"lng"] = [[NSString alloc] initWithFormat:@"%f", annotation.coordinate.longitude];
+        lostItem[@"lat"] =  [[NSString alloc] initWithFormat:@"%f", self.marker.position.latitude];
+        lostItem[@"lng"] = [[NSString alloc] initWithFormat:@"%f", self.marker.position.longitude];
         lostItem[@"username"] = [MyUser currentUser].username;
         lostItem[@"email"] = [MyUser currentUser].email;
         lostItem[@"helper"] = @"";
