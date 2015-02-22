@@ -11,6 +11,8 @@
 #import "MyUser.h"
 #import "HelperDetailViewController.h"
 #import "HelperMapViewController.h"
+#import <GoogleMaps/GoogleMaps.h>
+
 NSString *localReceived = @"localReceived";
 BOOL gotNotified;
 
@@ -23,6 +25,7 @@ BOOL gotNotified;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [GMSServices provideAPIKey:@"AIzaSyA-NWWuNoL_KK0dHXUvxvk_bI4n8slPa2w"];
     [MyUser registerSubclass];
     [Parse setApplicationId:@"ApbUdbGqhwedB8ypJDu6Gz8cYdqa8H3Gt5JV5Kih"
                   clientKey:@"NAbLVfq8CCKsCFAbVB18LqB8k3dKSh82RraBdQ7Y"];

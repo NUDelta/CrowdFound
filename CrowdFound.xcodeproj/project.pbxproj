@@ -17,6 +17,9 @@
 		598D44961A11095C0016484E /* RequestDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 598D44951A11095C0016484E /* RequestDetailViewController.m */; };
 		598D44991A1114390016484E /* HelperMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 598D44981A1114390016484E /* HelperMapViewController.m */; };
 		59ACE7D11A89130100CB5A85 /* delta.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 59ACE7D01A89130100CB5A85 /* delta.gpx */; };
+		59AEB8AA1A98003200EBA25C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59AEB8A91A98003200EBA25C /* CoreMotion.framework */; };
+		59AEB8AD1A99328E00EBA25C /* HelperGoogleMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AEB8AC1A99328E00EBA25C /* HelperGoogleMapViewController.m */; };
+		59AEB8B01A9945E800EBA25C /* AddLocationGMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AEB8AF1A9945E800EBA25C /* AddLocationGMapViewController.m */; };
 		59C92C951A226F0800B60983 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C92C941A226F0800B60983 /* TabBarViewController.m */; };
 		59E589861A1556A00007E551 /* AddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E589851A1556A00007E551 /* AddLocationViewController.m */; };
 		59E5898B1A1569C90007E551 /* HelperDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E5898A1A1569C90007E551 /* HelperDetailViewController.m */; };
@@ -60,6 +63,11 @@
 		598D44971A1114390016484E /* HelperMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperMapViewController.h; sourceTree = "<group>"; };
 		598D44981A1114390016484E /* HelperMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperMapViewController.m; sourceTree = "<group>"; };
 		59ACE7D01A89130100CB5A85 /* delta.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = delta.gpx; sourceTree = "<group>"; };
+		59AEB8A91A98003200EBA25C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		59AEB8AB1A99328E00EBA25C /* HelperGoogleMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperGoogleMapViewController.h; sourceTree = "<group>"; };
+		59AEB8AC1A99328E00EBA25C /* HelperGoogleMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperGoogleMapViewController.m; sourceTree = "<group>"; };
+		59AEB8AE1A9945E800EBA25C /* AddLocationGMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddLocationGMapViewController.h; sourceTree = "<group>"; };
+		59AEB8AF1A9945E800EBA25C /* AddLocationGMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddLocationGMapViewController.m; sourceTree = "<group>"; };
 		59C92C931A226F0800B60983 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		59C92C941A226F0800B60983 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
 		59E589841A1556A00007E551 /* AddLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddLocationViewController.h; sourceTree = "<group>"; };
@@ -84,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59AEB8AA1A98003200EBA25C /* CoreMotion.framework in Frameworks */,
 				FEB98007489FD9BA82793EE1 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -201,6 +210,8 @@
 				598D44951A11095C0016484E /* RequestDetailViewController.m */,
 				59E589841A1556A00007E551 /* AddLocationViewController.h */,
 				59E589851A1556A00007E551 /* AddLocationViewController.m */,
+				59AEB8AE1A9945E800EBA25C /* AddLocationGMapViewController.h */,
+				59AEB8AF1A9945E800EBA25C /* AddLocationGMapViewController.m */,
 			);
 			name = RequesterVC;
 			sourceTree = "<group>";
@@ -214,6 +225,8 @@
 				598D44981A1114390016484E /* HelperMapViewController.m */,
 				59E589891A1569C90007E551 /* HelperDetailViewController.h */,
 				59E5898A1A1569C90007E551 /* HelperDetailViewController.m */,
+				59AEB8AB1A99328E00EBA25C /* HelperGoogleMapViewController.h */,
+				59AEB8AC1A99328E00EBA25C /* HelperGoogleMapViewController.m */,
 			);
 			name = HelperVC;
 			sourceTree = "<group>";
@@ -232,6 +245,7 @@
 		D9ABD1636EDFF823FC680856 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59AEB8A91A98003200EBA25C /* CoreMotion.framework */,
 				0907DD44C990CAE582BC5974 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -382,9 +396,11 @@
 				59C92C951A226F0800B60983 /* TabBarViewController.m in Sources */,
 				59E5898B1A1569C90007E551 /* HelperDetailViewController.m in Sources */,
 				59E5899E1A15FBF10007E551 /* MyUser.m in Sources */,
+				59AEB8B01A9945E800EBA25C /* AddLocationGMapViewController.m in Sources */,
 				598D44551A10B1120016484E /* AppDelegate.m in Sources */,
 				598D44961A11095C0016484E /* RequestDetailViewController.m in Sources */,
 				59E589991A15DA8B0007E551 /* HelperAnnotation.m in Sources */,
+				59AEB8AD1A99328E00EBA25C /* HelperGoogleMapViewController.m in Sources */,
 				59F225481A2BD3CF00012572 /* SignUpViewController.m in Sources */,
 				598D44521A10B1120016484E /* main.m in Sources */,
 				59F2253C1A2A967200012572 /* RouteViewController.m in Sources */,
@@ -518,7 +534,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = CrowdFound/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "BB876719-D88E-4350-8B56-5FE61CE257B2";
@@ -539,7 +555,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = CrowdFound/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "BB876719-D88E-4350-8B56-5FE61CE257B2";
