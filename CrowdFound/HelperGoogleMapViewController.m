@@ -35,19 +35,19 @@
 @end
 
 @implementation HelperGoogleMapViewController
-- (IBAction)indexChanged:(id)sender {
-    switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 0:
-            [self.tabBarController setSelectedIndex:0];
-            break;
-        case 1:
-            [self.tabBarController setSelectedIndex:1];
-            break;
-        default:
-            break;
-    }
-}
+//- (IBAction)indexChanged:(id)sender {
+//    switch (self.segmentedControl.selectedSegmentIndex)
+//    {
+//        case 0:
+//            [self.tabBarController setSelectedIndex:0];
+//            break;
+//        case 1:
+//            [self.tabBarController setSelectedIndex:1];
+//            break;
+//        default:
+//            break;
+//    }
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

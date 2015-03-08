@@ -36,6 +36,12 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     [actionSheet showInView:self.view];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.descItemTextField resignFirstResponder];
+    [self.itemTextField resignFirstResponder];
+    [self.locationDetail resignFirstResponder];
+
+}
 
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -155,19 +161,19 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 - (IBAction)submit:(UIButton *)sender {
     [self saveRequest];
 }
-- (IBAction)indexChanged:(id)sender {
-    switch (self.segmentedControl.selectedSegmentIndex)
-    {
-        case 0:
-            [self.tabBarController setSelectedIndex:0];
-            break;
-        case 1:
-            [self.tabBarController setSelectedIndex:1];
-            break;
-        default: 
-            break; 
-    }
-}
+//- (IBAction)indexChanged:(id)sender {
+//    switch (self.segmentedControl.selectedSegmentIndex)
+//    {
+//        case 0:
+//            [self.tabBarController setSelectedIndex:0];
+//            break;
+//        case 1:
+//            [self.tabBarController setSelectedIndex:1];
+//            break;
+//        default: 
+//            break; 
+//    }
+//}
 
 
 //unwind segue from AddLocationViewController
@@ -233,40 +239,40 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 
 - (void)saveRequest
 {
-    for (id <MKAnnotation> annotation in self.annotations) {
-        if([annotation isKindOfClass:[MKUserLocation class]]) continue;
-        NSLog(@"%f", annotation.coordinate.latitude);
-        PFObject *lostItem = [PFObject objectWithClassName:@"Request"];
-        if (self.imageView.image != NULL) {
-            NSData* data = UIImageJPEGRepresentation(self.imageView.image, 0.5f);
-            PFFile *imageFile = [PFFile fileWithName:@"Image.jpg" data:data];
-            [lostItem setObject:imageFile forKey:@"image"];
-        }
-        NSLog(@"item name: %@", self.itemTextField.text);
-        lostItem[@"item"] = self.itemTextField.text;
-        lostItem[@"detail"] = self.descItemTextField.text;
-        lostItem[@"locationDetail"] = self.locationDetail.text;
-        lostItem[@"locDetail"] = self.lostItemLocation.text;
-        lostItem[@"lat"] =  [[NSString alloc] initWithFormat:@"%f", self.marker.position.latitude];
-        lostItem[@"lng"] = [[NSString alloc] initWithFormat:@"%f", self.marker.position.longitude];
-        lostItem[@"username"] = [MyUser currentUser].username;
-        lostItem[@"email"] = [MyUser currentUser].email;
-        lostItem[@"helper"] = @"";
-        lostItem[@"helperId"] = @"";
-        NSArray *array = [[NSArray alloc]init];
-        lostItem[@"helpers"] = array;
-        [lostItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if(succeeded) {
-                self.locationDetail.text = @"";
-                self.itemTextField.text = @"";
-                //        self.locationDetail.text = @"";
-                self.lostItemLocation.text = @"";
-                self.descItemTextField.text = @"";
-                self.imageView.image = nil;
-                [self.tabBarController setSelectedIndex:0];
-            }
-        }];
+//    for (id <MKAnnotation> annotation in self.annotations) {
+//        if([annotation isKindOfClass:[MKUserLocation class]]) continue;
+//        NSLog(@"%f", annotation.coordinate.latitude);
+    PFObject *lostItem = [PFObject objectWithClassName:@"Request"];
+    if (self.imageView.image != NULL) {
+        NSData* data = UIImageJPEGRepresentation(self.imageView.image, 0.5f);
+        PFFile *imageFile = [PFFile fileWithName:@"Image.jpg" data:data];
+        [lostItem setObject:imageFile forKey:@"image"];
     }
+    NSLog(@"item name: %@", self.itemTextField.text);
+    lostItem[@"item"] = self.itemTextField.text;
+    lostItem[@"detail"] = self.descItemTextField.text;
+    lostItem[@"locationDetail"] = self.locationDetail.text;
+    lostItem[@"locDetail"] = self.lostItemLocation.text;
+    lostItem[@"lat"] =  [[NSString alloc] initWithFormat:@"%f", self.marker.position.latitude];
+    lostItem[@"lng"] = [[NSString alloc] initWithFormat:@"%f", self.marker.position.longitude];
+    lostItem[@"username"] = [MyUser currentUser].username;
+    lostItem[@"email"] = [MyUser currentUser].email;
+    lostItem[@"helper"] = @"";
+    lostItem[@"helperId"] = @"";
+    NSArray *array = [[NSArray alloc]init];
+    lostItem[@"helpers"] = array;
+    [lostItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if(succeeded) {
+            self.locationDetail.text = @"";
+            self.itemTextField.text = @"";
+            //        self.locationDetail.text = @"";
+            self.lostItemLocation.text = @"";
+            self.descItemTextField.text = @"";
+            self.imageView.image = nil;
+            [self.tabBarController setSelectedIndex:0];
+        }
+    }];
+//    }
 
 //    UINavigationController *navController = self.navigationController;
 //    [navController popViewControllerAnimated:NO];

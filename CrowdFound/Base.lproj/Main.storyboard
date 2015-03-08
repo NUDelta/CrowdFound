@@ -57,21 +57,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="clj-x7-Bcp">
                         <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="oQt-74-i8T">
-                            <rect key="frame" x="176" y="8" width="249" height="29"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="Help find lost item"/>
-                                <segment title="I lost an item"/>
-                            </segments>
-                            <connections>
-                                <action selector="indexChanged:" destination="0Ks-2c-CcI" eventType="valueChanged" id="nNN-qQ-mw1"/>
-                                <action selector="indexChanged:" destination="rkn-EV-q6I" eventType="valueChanged" id="sWJ-rB-WK0"/>
-                            </connections>
-                        </segmentedControl>
                     </navigationItem>
                     <connections>
-                        <outlet property="segmentedControl" destination="oQt-74-i8T" id="cHV-7b-DnL"/>
                         <outlet property="spinner" destination="1MP-oO-kLK" id="7QC-gS-Fij"/>
                         <segue destination="wu9-Dl-ZdV" kind="show" identifier="HelperDetailSegue" id="4hI-zP-oZU"/>
                     </connections>
@@ -227,17 +214,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="3Ed-nZ-ReB">
                         <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="4Ap-hM-fTb">
-                            <rect key="frame" x="176" y="8" width="249" height="29"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="Help find lost item"/>
-                                <segment title="I lost an item"/>
-                            </segments>
-                            <connections>
-                                <action selector="indexChanged:" destination="rkn-EV-q6I" eventType="valueChanged" id="pBF-pz-InO"/>
-                            </connections>
-                        </segmentedControl>
                     </navigationItem>
                     <connections>
                         <outlet property="descItemTextField" destination="LD8-zv-dcM" id="AZV-TZ-JzJ"/>
@@ -245,7 +221,6 @@
                         <outlet property="itemTextField" destination="EQj-6x-7Ed" id="kiV-fa-YZH"/>
                         <outlet property="locationDetail" destination="jea-Zv-cVt" id="dDL-iY-SQL"/>
                         <outlet property="lostItemLocation" destination="3rk-cO-B9O" id="4ow-v1-2ab"/>
-                        <outlet property="segmentedControl" destination="4Ap-hM-fTb" id="yaD-mD-yHA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ZF-Js-qP2" userLabel="First Responder" sceneMemberID="firstResponder"/>
